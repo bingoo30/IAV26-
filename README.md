@@ -1,4 +1,4 @@
-# NOMBRE: Proyecto final IAV
+# NOMBRE: Proyecto final IAV26
 
 **Autores**
 - [María Eduarda Beckers](https://github.com/MaEduardaB)
