@@ -111,9 +111,11 @@ A continuación se detalla un plan de pruebas para verificar que se cumplen todo
 ## 8. Evolución y distribución
 
 ## 9. Licencia
-- Uso educativo y de investigación - UCM
+- Uso educativo y de investigación – Universidad Complutense de Madrid
 - Copyright (c) 2026 María Eduarda Beckers, Haoshuang Hou, Bingcheng Wang
-- Se concede permiso permanente a los profesores de la Facultad de Informática de la Universidad Complutense de Madrid para utilizar, reproducir, modificar o distribuir total o parcialmente este material (documentación, código y recursos), con fines educativos o de investigación. Se permite obtener datos agregados de forma anónima o utilizar el material con reconocimiento expreso de los autores.
-- Esta licencia no otorga derechos de uso comercial fuera del ámbito educativo o de investigación, salvo autorización expresa de los autores.
+- Se concede permiso permanente a los profesores de la Facultad de Informática de la Universidad Complutense de Madrid para utilizar, reproducir, modificar o distribuir total o parcialmente este material (código) con fines exclusivamente educativos o de investigación.
+- Se permite el uso de datos derivados de forma agregada y anónima, así como la inclusión del material en trabajos académicos, siempre con reconocimiento expreso de los autores.
+- Esta licencia no otorga derechos de uso comercial ni de explotación fuera del ámbito académico o de investigación, salvo autorización expresa de los autores.
+- Arte, música y recursos audiovisuales: todos los assets han sido creados por los autores del proyecto y se distribuyen exclusivamente bajo las mismas condiciones de uso educativo y de investigación descritas anteriormente, quedando prohibido su uso comercial sin autorización expresa.
 
 ## 10. Referencias
