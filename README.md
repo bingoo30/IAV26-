@@ -32,9 +32,9 @@
 
 Este proyecto es un proyecto final práctica de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM.
 
-Se trata de un prototipo básico basado en ...
+Se trata de un prototipo básico basado en nuestro juego de Zapascape de la asignatura Proyectos 3.
 
-El objetivo es ...
+El objetivo es conseguir la mejor puntuación recogiendo zapatos teniendo en cuanta su peso y su valor, intentando maximizar la puntuación. Cuanto más peso lleves, más lento caminarás.
 
 ## 2. Instalación y uso
 
@@ -64,6 +64,12 @@ En cuanto a interfaz...
 
 ## 4. Diseño de la solución
 
+El proyecto contará con 3 escenas:
+- Escena inicial: el menú de inicio de la simulación que tendrá un botón para iniciar la simulación.
+- Escena principal: simulación del juego.
+- Escena final: indicará que bot ha conseguido la mejor puntuación y botones para salir o reiniciar la simulación.
+
+
 ### 4.1. Controles
 
 |Input|Función|
@@ -75,8 +81,16 @@ En cuanto a interfaz...
 | Elemento | Tipo | Funcionalidad |
 |----------|------|--------------|
 | Cam. fija | Botón | Coloca la cámara en una posición y rotación predeterminadas. |
+| Pantalla dividida | Botón | La pantalla se dividirá en dos, cambiando de la cámara principal a las cámaras de los dos bots |
+| Puntuaciones | Texto | Indirá la puntuacción actual de los dos bots |
+| Salir | Botón | Cerrar el programa |
+| Reiniciar | Botón | Reiniciar la simulación |
+| Temporizador | Texto | Un cuenta atrás que indicará cuanto tiempo queda para finalizar la simulación |
 
 ### 4.3. Comportamientos implementados
+
+#### Beastie rojo
+   Utilizará machine learning para aprender que acciones le resultaran una mayor puntuación. Al realizar la simulación una serie de veces, el Beastie rojo deberá ser capaz de rocojer zapatos y devolverlos a su base, llevando en cuenta el tiempo que ha tardado en devolver el zapato y su valor.
 
 **Algo**
 - Descripcion.
@@ -86,6 +100,12 @@ En cuanto a interfaz...
 ``` csharp
 class Hola
 ```
+#### Beastie morado
+   Utilizará GOAP para la recogida de zapatos.
+
+#### Tux 
+   Es el personaje que estará molestando a los dos beasties de conseguir los zapatos. Usará árbol de comportamiento para estar disparando proyectiles hacia los beasties. Tux estará caminando desde fuera de la mapa a una altura superior usando la navMesh de Unity, cuando llegue a una esquina, su nuevo objetivo será la siguiente esquina. A cada cierto tiempo disparará un proyectil teniendo en cuenta la distancia y la puntuación de cada beastie, haciendo una ponderación entre esos dos parámetros.
+
 
 ## 5. Implementación
 **A.**
@@ -93,6 +113,8 @@ class Hola
 **C.**
 **D.**
 **E.**
+
+
 ## 6. Pruebas y métricas
 
 A continuación se detalla un plan de pruebas para verificar que se cumplen todos los requisitos del enunciado. Se organiza por apartados (A–E) según las características.
@@ -106,7 +128,11 @@ A continuación se detalla un plan de pruebas para verificar que se cumplen todo
 **Apartado D.**
 **Apartado E.**
 
+
+
 ## 7. Conclusión
+
+
 
 ## 8. Evolución y distribución
 
