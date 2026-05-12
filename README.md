@@ -75,10 +75,14 @@ El proyecto contará con 3 escenas:
 
 
 ### 4.1. Controles
-
-|Input|Función|
-|--|--|
-|**O**|crear una rata|
+|Input|Función|Jugador|
+|--|--|--|
+|WASD|Movimiento|1|
+|Shift izquierdo|Correr|1|
+|E|Soltar|1|
+|Flechas|Movimiento|2|
+|Numpad 1|Correr|2|
+|Numpad 3|Soltar|2|
 
 ### 4.2. HUD
 ![Interfaz](DocImages/interfaz.png)
@@ -113,32 +117,91 @@ class Hola
 
 ## 5. Implementación
 **A.**
-**B.**
-**C.**
-**D.**
-**E.**
 
+**B.**
+
+**C.**
+
+**D.**
+
+**E.**
 
 ## 6. Pruebas y métricas
 
 A continuación se detalla un plan de pruebas para verificar que se cumplen todos los requisitos del enunciado. Se organiza por apartados (A–E) según las características.
 
 **Apartado A.**
-1. Hacer algo:
-   - Confirmar que algo funcione de tal forma.
+1. Desde menú inicial, entrar al juego pulsando el botón `Start`:
+   - Confirmar que aparece un panel que muestra dos avatares. 
+   - Confirmar que puedes elegir entre `Human` y `AI`.
+2. Después de elegir el tipo para los dos avatares, al pulsar el botón `Play` te lleva a la escena de juego seleccionado los prefabs correspondientes.
+   - Confirmar que los avatares se colocan en su base correspondiente.
+3. Tener al menos un avatar `Human` e intentar coger un zapato.
+   - Confirmar que el zapato aparece por encima del avatar y ralentiza al jugador al caminar.
+   - Confirmar que sólo se puede coger un par de zapatos a la vez.
+   - Confirmar que se suelta los zapatos (si los hay) pulsando los controles correspondientes.
+4. Teniendo un par de zapatos cogido, llegar a una base.
+   - Comprobar que solo se destruye los zapatos y se acumulan puntos cuando el avatar llega a su base.
+5. En la escena de juego, aparece un botón `Change Camera` y otro de `Exit`.
+   - Comprobar que, al clicar al primer botón, se cambia la cámara.
+   - Comprobar que, al clicar al segundo botón, se cierra el programa.
 
 **Apartado B.**
+1. Después de elegir dos prefabs de `Human`, al pulsar el botón `Play` te lleva a la escena de juego seleccionado los prefabs correspondientes.
+   - Confirmar que los controles de movimiento funcionan.
+2. Tener al menos un avatar `Human` e intentar coger un zapato.
+   - Confirmar que el zapato aparece por encima del avatar y ralentiza al jugador al caminar.
+   - Confirmar que sólo se puede coger un par de zapatos a la vez.
+   - Confirmar que se suelta los zapatos (si los hay) pulsando los controles correspondientes.
+3. Teniendo un par de zapatos cogido, llegar a una base.
+   - Comprobar que solo se destruye los zapatos y se acumulan puntos cuando el avatar llega a su base.
+4. En la escena de juego, aparece un botón `Change Camera` y otro de `Exit`.
+   - Comprobar que, al clicar al primer botón, se cambia la cámara.
+   - Comprobar que, al clicar al segundo botón, se cierra el programa.
+
 **Apartado C.**
+TUX
+
 **Apartado D.**
+GOAP 
+Machine Learning
+
 **Apartado E.**
+1. Confirmar que al depositar un par de zapatos, la puntación correspondiente se suma al avatar específico.
+2. Verificar que todas las métricas se muestran y se actualizan correctamente en el HUD.
 
 
 
 ## 7. Conclusión
+En este proyecto, se ha desarrollado un prototipo funcional que integra distintos conceptos fundamentales de la Inteligencia Artificial aplicada a videojuegos dentro de un entorno interactivo en Unity. A través del escenario, se han implementado y combinado técnicas clásicas de **decisión** como **Árboles de Comportamiento**, **GOAP (Goal Oriented Action Planning)** y **ML (Machine Learning)**. Además, se han experimentado técnicas de navegación usando la malla de **navegación** que ofrece Unity combinada con el uso de waypoints.
+
+Uno de los aspectos más peculiares ha sido la **comparación entre distintas herramientas y metodologías** ampliamente utilizadas en la industria. Esto nos ha permitido comprender mejor sus diseños, analizar sus diferencias y conocer en qué situaciones resulta más conveniente utilizar cada una. Ha sido una experiencia muy enriquecedora trabajar con enfoques nuevos y experimentar directamente con ellos.
+
+Asimismo, la incorporación de métricas ha permitido observar cómo actúan nuestros agentes en diferentes situaciones. Gracias a estos datos, hemos podido identificar posibles mejoras y detectar comportamientos que podrían optimizarse o modificarse en futuras versiones.
+
+Durante el desarrollo también se han abordado problemas típicos relacionados con la toma de decisiones, la navegación de agentes y la integración de distintos sistemas de IA dentro de un mismo entorno.
+
+En conjunto, este proyecto no solo cumple los objetivos planteados, sino que también sirve como una base sólida para futuras ampliaciones y experimentación. Además, el proceso de desarrollo nos ha permitido aprender una gran cantidad de conceptos y técnicas relacionadas con la Inteligencia Artificial aplicada a videojuegos, aumentando todavía más nuestro interés y motivación por seguir profundizando en este campo.
 
 
 
 ## 8. Evolución y distribución
+
+### María Eduarda Beckers
+| Fecha | Descripción |
+|----------|------|
+| 2026-05-12 | *Documentación*: s |
+
+### Haoshuang Hou
+| Fecha | Descripción |
+|----------|------|
+| 2026-05-12 | *Documentación*: s |
+
+### Bingcheng Wang
+| Fecha | Descripción |
+|----------|------|
+| 2026-05-10 | *Organización*: Creación del repositorio y README |
+| 2026-05-11 | *Desarrollo*: Creación del proyecto de Unity |
 
 ## 9. Licencia
 - Uso educativo y de investigación – Universidad Complutense de Madrid
