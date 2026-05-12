@@ -21,6 +21,10 @@
    4.1. [Controles](#41-controles)  
    4.2. [HUD](#42-hud)  
    4.3. [Comportamientos implementados](#43-comportamientos-implementados)  
+   4.3.1 [Beastie Rojo](#beastie-rojo)  
+   4.3.2 [Beastie Morado](#beastie-morado)   
+   4.3.2 [Tux](#tux)
+
 5. [Implementación](#5-implementación)  
 6. [Pruebas y métricas](#6-pruebas-y-métricas)  
 7. [Conclusión](#7-conclusión)  
@@ -89,7 +93,7 @@ El proyecto contará con 3 escenas:
 
 ### 4.3. Comportamientos implementados
 
-#### Beastie rojo
+#### 4.3.1 Beastie rojo
    Utilizará machine learning para aprender que acciones le resultaran una mayor puntuación. Al realizar la simulación una serie de veces, el Beastie rojo deberá ser capaz de rocojer zapatos y devolverlos a su base, llevando en cuenta el tiempo que ha tardado en devolver el zapato y su valor.
 
 **Algo**
@@ -100,10 +104,10 @@ El proyecto contará con 3 escenas:
 ``` csharp
 class Hola
 ```
-#### Beastie morado
+#### 4.3.2 Beastie morado
    Utilizará GOAP para la recogida de zapatos.
 
-#### Tux 
+#### 4.3.3 Tux 
    Es el personaje que estará molestando a los dos beasties de conseguir los zapatos. Usará árbol de comportamiento para estar disparando proyectiles hacia los beasties. Tux estará caminando desde fuera de la mapa a una altura superior usando la navMesh de Unity, cuando llegue a una esquina, su nuevo objetivo será la siguiente esquina. A cada cierto tiempo disparará un proyectil teniendo en cuenta la distancia y la puntuación de cada beastie, haciendo una ponderación entre esos dos parámetros.
 
 
