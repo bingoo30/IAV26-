@@ -34,11 +34,11 @@
 ---
 ## 1. Resumen 
 
-Este proyecto es un proyecto final de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM.
+Para el proyecto final práctica de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM.
 
 Se trata de un prototipo básico basado en nuestro juego de Zapascape de la asignatura Proyectos 3.
 
-El objetivo es conseguir la mejor puntuación recogiendo zapatos teniendo en cuenta su peso y su valor, intentando maximizar la puntuación. Cuanto más peso lleves, más lento caminarás.
+El objetivo es conseguir el mejor resultado recogiendo zapatos teniendo en cuanta su peso y su valor, intentando maximizar la puntuación final, teniendo como inspiración el tipico problema de la mochila.
 
 ## 2. Instalación y uso
 
