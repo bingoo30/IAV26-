@@ -34,37 +34,38 @@
 ---
 ## 1. Resumen 
 
-Este proyecto es un proyecto final práctica de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM.
+Este proyecto es un proyecto final de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM.
 
 Se trata de un prototipo básico basado en nuestro juego de Zapascape de la asignatura Proyectos 3.
 
-El objetivo es conseguir la mejor puntuación recogiendo zapatos teniendo en cuanta su peso y su valor, intentando maximizar la puntuación. Cuanto más peso lleves, más lento caminarás.
+El objetivo es conseguir la mejor puntuación recogiendo zapatos teniendo en cuenta su peso y su valor, intentando maximizar la puntuación. Cuanto más peso lleves, más lento caminarás.
 
 ## 2. Instalación y uso
 
-Todo el contenido del proyecto está disponible en este repositorio, utilizamos Unity 6 **(versión).**
+Todo el contenido del proyecto está disponible en este repositorio, utilizamos Unity 6 **(6000.3.12f1).**
 
 ### 2.1 Ejecutable
 En el repositorio se localiza el ejecutable de dicha práctica para poder experimentar los comportamientos: [TAG DE EJECUTABLE]()
 
 ### 2.2 Vídeo
-- [IAV26-G07-P1](https://youtu.be/aDzJ2DPpiCw) — Vídeo documental con las pruebas del juego (oculto en YouTube)
+- [IAV26-G07-P1](ENLACE) — Vídeo documental con las pruebas del juego (oculto en YouTube)
 
 ## 3. Planteamiento del problema
-Tenemos un escenario de Unity 3D que está compuesto por ...
+Tenemos un escenario de Unity 3D que está compuesto por: dos personajes jugables, varios objetos recolectables, base de cada jugador y un NPC que molestará a los avatares. El jugador debe maximizar la puntuación obtenida teniendo en cuenta el coste de recoger el objeto y llevarlo a la base. Al tener encima un par de zapatos ralentiza el movmiento del jugador dependiendo del peso de éste. Además, el jugador debe esquivar del NPC que lanzará proyectiles que le paralizará durante un tiempo determinado.
 
 El prototipo permitirá:
 ### 3.A. Entorno
-    
+   Hay un mundo virtual con una division de malla de navegación proporcionado por Unity, con objetos recolectables distribuidos en unos puntos determinados en la mapa. Se ubican dos personajes que pueden ser controlado por IA o por el jugador humano. Y habrá un NPC en una de la esquina de la mapa de la mapa.
+   Hay una cámara fija general y otras cámaras que persiga a cada uno a un personaje en tercera persona. Habrá botones en el interfaz del usuario para cambiar el modo de obaservación.
 ### 3.B. Enunciado B
-    
+   El agente que controlamos (Beastie) aparece incialmente donde su base. Puede moverse por el escenario andando o corriendo, podrá también realizar acciones de recoger y soltar zapatos.
 ### 3.C. Enunciado C
-
+   El NPC (Tux) se implementará sus acciones mediante un **árbol de comportamiento**. Navega alrededor de la mapa usando la malla de navegación de Unity. Cada determinado tiempo realiza la acción de disparo, eligiendo el objetivo teniendo en cuenta la puntuación del avatar y la distancia.
 ### 3.D. Enunciado D
-implementacion
+   Los personajes jugables (Beastie) se implementará con goap y Machine learning.
+
 ### 3.E. Enunciado E
-metrica
-En cuanto a interfaz...
+   Intentar máximar la puntuación obtenida de cada avatar.
 
 ## 4. Diseño de la solución
 
