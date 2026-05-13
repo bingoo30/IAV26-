@@ -13,10 +13,10 @@
    2.2. [Vídeo](#22-vídeo)  
 3. [Planteamiento del problema](#3-planteamiento-del-problema)  
    3.A. [Entorno](#3a-entorno)  
-   3.B. [Enunciado B](#3b-enunciado-b)  
-   3.C. [Enunciado C](#3c-enunciado-c)  
-   3.D. [Enunciado D](#3d-enunciado-d)  
-   3.E. [Enunciado E](#3e-enunciado-e)  
+   3.B. [Movimiento del personaje](#3b-movimiento-del-personaje)  
+   3.C. [NPC](#3c-npc)  
+   3.D. [Bots](#3d-bots)  
+   3.E. [Métricas](#3e-métricas)  
 4. [Diseño de la solución](#4-diseño-de-la-solucion)  
    4.1. [Controles](#41-controles)  
    4.2. [HUD](#42-hud)  
@@ -34,11 +34,9 @@
 ---
 ## 1. Resumen 
 
-Para el proyecto final práctica de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM.
+Para el proyecto final de la asignatura de Inteligencia Artificial para Videojuegos del Grado en Desarrollo de Videojuegos de la UCM, se desarrolla un prototipo básico basado en Zapascape, nuestro juego de la asignatura Proyectos 3.
 
-Se trata de un prototipo básico basado en nuestro juego de Zapascape de la asignatura Proyectos 3.
-
-El objetivo es conseguir el mejor resultado recogiendo zapatos teniendo en cuanta su peso y su valor, intentando maximizar la puntuación final, teniendo como inspiración el tipico problema de la mochila.
+El objetivo consiste en conseguir la mejor puntuación posible recogiendo zapatos, teniendo en cuenta su peso y su valor, con el fin de maximizar la puntuación final. Esta propuesta está inspirada en el típico problema de la mochila.
 
 ## 2. Instalación y uso
 
@@ -48,32 +46,41 @@ Todo el contenido del proyecto está disponible en este repositorio, utilizamos 
 En el repositorio se localiza el ejecutable de dicha práctica para poder experimentar los comportamientos: [TAG DE EJECUTABLE]()
 
 ### 2.2 Vídeo
-- [IAV26-G07-P1](ENLACE) — Vídeo documental con las pruebas del juego (oculto en YouTube)
+- [IAV26-ProyectoFinal](ENLACE) — Vídeo documental con las pruebas del juego (oculto en YouTube)
 
 ## 3. Planteamiento del problema
-Tenemos un escenario de Unity 3D que está compuesto por: dos personajes jugables, varios objetos recolectables, base de cada jugador y un NPC que molestará a los avatares. El jugador debe maximizar la puntuación obtenida teniendo en cuenta el coste de recoger el objeto y llevarlo a la base. Al tener encima un par de zapatos ralentiza el movmiento del jugador dependiendo del peso de éste. Además, el jugador debe esquivar del NPC que lanzará proyectiles que le paralizará durante un tiempo determinado.
+El proyecto consiste en desarrollar un escenario en Unity 3D compuesto por dos personajes jugables, varios objetos recolectables, la base de cada jugador y un NPC que encargado de dificultar las acciones de los avatares. 
+El objetivo del jugador es maximizar la puntuación obtenida, teniendo en cuenta el valor del objeto recogido y el coste de transportarlo hasta la base. Cada par de zapatos tiene un peso determinado que afecta a la velocidad de movimiento del personaje; cuanto mayor sea el peso transportado, más lento se moverá el avatar. Además, los jugadores deben esquivar al NPC, que lanzará proyectiles capaces de paralizarlos temporalmente.
 
 El prototipo permitirá:
 ### 3.A. Entorno
-   Hay un mundo virtual con una division de malla de navegación proporcionado por Unity, con objetos recolectables distribuidos en unos puntos determinados en la mapa. Se ubican dos personajes que pueden ser controlado por IA o por el jugador humano. Y habrá un NPC en una de la esquina de la mapa de la mapa.
-   Hay una cámara fija general y otras cámaras que persiga a cada uno a un personaje en tercera persona. Habrá botones en el interfaz del usuario para cambiar el modo de obaservación.
-### 3.B. Enunciado B
-   El agente que controlamos (Beastie) aparece incialmente donde su base. Puede moverse por el escenario andando o corriendo, podrá también realizar acciones de recoger y soltar zapatos.
-### 3.C. Enunciado C
-   El NPC (Tux) se implementará sus acciones mediante un **árbol de comportamiento**. Navega alrededor de la mapa usando la malla de navegación de Unity. Cada determinado tiempo realiza la acción de disparo, eligiendo el objetivo teniendo en cuenta la puntuación del avatar y la distancia.
-### 3.D. Enunciado D
-   Los personajes jugables (Beastie) se implementará con goap y Machine learning.
+   El escenario de trata de un mundo virtual con una malla de navegación proporcionada por Unity. Los objetos recolectables están distribuidos en puntos concretos del mapa y existen dos personajes que pueden ser controlados tanto por IA como por un jugador humano. Además, hay un NPC situado en una de las esquinas de la mapa.
+   En el escenario cuanta de una cámara general fija, cámaras de tercera persona que seguirán a cada personaje y un botón en la interfaz de usuario para cambiar entre distintos modos de observación.
+### 3.B. Movimiento del personaje
+   El agente controlable (Beastie) aparece inicialmente en su base. Puede desplazarse por el escenario caminando o corriendo y realizar acciones de recoger y soltar zapatos.
+   La velocidad de movimiento depende del peso del objeto transportado, lo que obligará al jugador tomar decisiones estratégicas entre el valor del objeto y la movilidad.
+### 3.C. NPC
+   El NPC (Tux) implementa su comportamiento mediante un **árbol de comportamiento**. Navega alrededor de la mapa usando la malla de navegación de Unity y, cada cierto tiempo, realiza disparos a los juagadores. La selección del objetivo se realiza en función de la puntuación del avatar y de la distancia entre el NPC y el jugador.
+   Los proyectiles aplican un efecto que paraliza el movimiento del jugador durante un tiempo determinado.
+### 3.D. Bots
+   Los personajes cosntrolados por IA (Beastie) se implementa utilizando técnicas:
+   - GOAP(Goal-Oriented Action Planning).
+   - Machine learning.
+   Estos agentes deben tomar decisiones para optimizar la recogida y transporte de objetos.
 
-### 3.E. Enunciado E
-   Intentar máximar la puntuación obtenida de cada avatar.
+### 3.E. Métricas
+   El objetivo es maximizar la puntuación obtenida por cada avatar. Para ello, los agentes deben decidir la acción valorando:
+   - Puntuación de los objetos recogidos.
+   - Peso transportado.
+   - Tiempo necesario para llevar el objeto hasta la base.
+   - Riesgo de ser paralizado por el NPC.
 
 ## 4. Diseño de la solución
 
-El proyecto contará con 3 escenas:
-- Escena inicial: el menú de inicio de la simulación que tendrá un botón para iniciar la simulación.
-- Escena principal: simulación del juego.
-- Escena final: indicará que bot ha conseguido la mejor puntuación y botones para salir o reiniciar la simulación.
-
+El proyecto contará con tres escenas:
+- **Escena inicial:** menú de inicio de la simulación, que tendrá un botón para iniciar la partida.
+- **Escena principal:** simulación del juego.
+- **Escena final:** mostrará las puntuaciones de los bots e incluirá botones para salir o reiniciar la simulación.
 
 ### 4.1. Controles
 |Input|Función|Jugador|
@@ -86,7 +93,6 @@ El proyecto contará con 3 escenas:
 |Numpad 3|Soltar|2|
 
 ### 4.2. HUD
-![Interfaz](DocImages/interfaz.png)
 | Elemento | Tipo | Funcionalidad |
 |----------|------|--------------|
 | Cam. fija | Botón | Coloca la cámara en una posición y rotación predeterminadas. |
