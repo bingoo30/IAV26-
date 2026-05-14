@@ -449,9 +449,105 @@ function ReconstructPlan(finalNode: PlanNode) : Action[]
    return plan
 ```
 #### 4.3.3 Tux 
-   Es el personaje que estará molestando a los dos beasties de conseguir los zapatos. Usará árbol de comportamiento para estar disparando proyectiles hacia los beasties. Tux estará caminando desde fuera de la mapa a una altura superior usando la navMesh de Unity, cuando llegue a una esquina, su nuevo objetivo será la siguiente esquina. A cada cierto tiempo disparará un proyectil teniendo en cuenta la distancia y la puntuación de cada beastie, haciendo una ponderación entre esos dos parámetros.
+   El comportamiento de Tux estará controlado mediante un **Behaviour Tree (árbol de comportamiento)**, permitiendo gestionar tanto la navegación como el sistema de ataque de forma modular y escalable. 
+   Tux aparecerá fuera del mapa, en una zona superior, y patrullará continuamente siguiendo una serie de puntos **(waypoints)**. Utilizará la malla de navegación de Unity para llegar al destino.
 
+   Cada cierto tiempo disparará proyectiles hacia los Beasties. La selección del objetivo se realizará mediante una ponderación basada en la distancia al Beastie y la puntuación actual del Beastie.
+   Se prioriza la acción de disparo frente a la navegación.
+   - **Estructura base**
+      ```csharp
+      class Task:
+         function run()->bool
+      ```
+      Nodos de control
+      Son los que determina el flujo de ejecución del árbol.
+      - Selector: Ejecuta los hijos en orden hasta que uno tenga éxito.
+      - Sequence: Ejecuta todos los hijos en orden. Si uno falla, la secuencia falla.
+      ```csharp
+      class Selector extends Task:
+         children: Task[]
+         function run()->bool:
+            for c in children:
+               if c.run():
+                  return true
+            return false
 
+      class Sequence extends Task:
+         children: Task[]
+         function run()->bool:
+            for c in children:
+               if not c.run():
+                  return false
+            return true
+      ```
+   - **Ataque**
+      1. Tiempo de espera
+      Comprueba si ha transcurrido el tiempo necesario para volver a disparar.
+      ```csharp
+      class Cooldown extends Task:
+         children: Task[]
+         function run() -> bool:
+            if currentTime >= nextShootTime:
+               return true
+            return false
+      ```
+      2. Selección del objetivo
+      La prioridad del objetivo se calcula mediante una ponderación entre la puntuación y la distancia: **P = score * w1 / distance * w2**, siendo *w1* y *w2* son pesos de cada uno de esos valores.
+      ```csharp
+      class SelectTarget extends Task:
+         class BeastieInfo:
+            score: float
+         
+         scoreWeight: float
+         distanceWeight: float
+
+         function run() -> bool:
+            best = min
+            for b in BeastieInfo:
+               priority = b.score * scoreWeight / distanceTo(b) * distanceWeight
+
+               if priority > best:
+                  target = beastie
+                  best = priority
+            return true
+      ```
+      3. Disparo
+      ```csharp
+      class Shoot extends Task:
+         function run() -> bool:
+            direction = normalize(target.position - tux.position)
+            shoot(direction)
+            return true
+      ```
+   - **Navegación**
+      1. Selección del siguiente punto
+      ```csharp
+      class NextWaypoint extends Task:
+         function run() -> bool:
+            if reached(currentWaypoint):
+               currentWaypoint = path.next()
+            return true
+      ```
+      2. Movimiento
+      ```csharp
+      class NextWaypoint extends Task:
+         agent: NavMeshAgent
+         function run() -> bool:
+           agent.SetDestination(currentWaypoint.position)
+         return true
+      ```
+   - **Diagrama**
+   ```mermaid
+   ---
+   config:
+   layout: fixed
+   ---
+   flowchart TB
+      Init["Init"] --> A(("?"))
+      A --> B(("->")) & C(("->")) & J("Siguiendo ruta")
+      B --> D("Tiempo Superado?") & K["Selección del objetivo"] & L["Disparo"]
+      C --> H("Waypoint alcanzado?") & I["Selección del Wayponit"]
+   ```
 ## 5. Implementación
 **A.**
 
@@ -497,7 +593,17 @@ A continuación se detalla un plan de pruebas para verificar que se cumplen todo
    - Comprobar que, al clicar al segundo botón, se cierra el programa.
 
 **Apartado C.**
-TUX
+1. Entrar en la escena de juego y observar el comportamiento de Tux.
+   - Comprobar que Tux aparece en una de las esquinas del mapa.
+   - Comprobar que Tux se desplaza correctamente entre los waypoints.
+2. Esperar a que Tux ataque.
+   - Comprobar que Tux realiza un disparo únicamente cuando ha superado el cooldown.
+   - Comprobar que no dispara continuamente.
+   - Comprobar que Tux selecciona objetivos en función de la distancia y puntuación.
+   - Comprobar que Tux continúa moviendo cuando no puede disparar.
+3. Cuando el proyectil colisiona con un avatar.
+   - Comprobar que el proyectil al colisionar con Beastie lo paralice.
+   - Comprobar que Beastie recupera el movimiento tras finalizar el tiempo de efecto.
 
 **Apartado D.**
 GOAP 
@@ -506,7 +612,6 @@ Machine Learning
 **Apartado E.**
 1. Confirmar que al depositar un par de zapatos, la puntación correspondiente se suma al avatar específico.
 2. Verificar que todas las métricas se muestran y se actualizan correctamente en el HUD.
-
 
 
 ## 7. Conclusión
@@ -528,12 +633,14 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 | Fecha | Descripción |
 |----------|------|
 | 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
-| 2026-05-12 | *Documentación*: añadir explicacion de ML |
+| 2026-05-14 | *Documentación*: añadir explicacion de ML |
 
 ### Haoshuang Hou
 | Fecha | Descripción |
 |----------|------|
 | 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
+| 2026-05-15 | *Documentación*: añadir explicacion y pseudocódigo de árbol de comportamiento |
+| 2026-05-15 | *Desarrollo*: crear el HUD|
 
 ### Bingcheng Wang
 | Fecha | Descripción |
@@ -552,7 +659,8 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 - Arte, música y recursos audiovisuales: todos los assets han sido creados por los autores del proyecto y se distribuyen exclusivamente bajo las mismas condiciones de uso educativo y de investigación descritas anteriormente, quedando prohibido su uso comercial sin autorización expresa.
 
 ## 10. Referencias
-
+- [Narratech](https://narratech.com/es/)
 - [Descargarse ML-Agents Toolkit](https://docs.unity3d.com/Packages/com.unity.ml-agents@4.0/manual/Installation.html)
 - [Canal de YouTube que enseña como descargar el ML-Agents Toolkit](https://www.youtube.com/@LudicWorlds)
 - [Video tutorial de como usar el ML-Agents Toolkit](https://www.youtube.com/watch?v=zPFU30tbyKs)
+- [Video tutorial de crear un árbol de comportamiento en Unity](https://www.youtube.com/watch?v=aR6wt5BlE-E)
