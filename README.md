@@ -31,6 +31,7 @@
 8. [Evolución y distribución](#8-evolución-y-distribución)  
 9. [Licencias](#9-licencia)  
 10. [Referencias](#10-referencias)
+
 ---
 ## 1. Resumen 
 
@@ -553,4 +554,5 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 ## 10. Referencias
 
 - [Descargarse ML-Agents Toolkit](https://docs.unity3d.com/Packages/com.unity.ml-agents@4.0/manual/Installation.html)
-- [Tutorial de como usar el ML-Agents Toolkit](https://www.youtube.com/@LudicWorlds)
+- [Canal de YouTube que enseña como descargar el ML-Agents Toolkit](https://www.youtube.com/@LudicWorlds)
+- [Video tutorial de como usar el ML-Agents Toolkit](https://www.youtube.com/watch?v=zPFU30tbyKs)
