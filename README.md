@@ -116,8 +116,224 @@ El proyecto contará con tres escenas:
 class Hola
 ```
 #### 4.3.2 Beastie morado
-   Utilizará GOAP para la recogida de zapatos.
+**GOAP (Goal-Oriented Action Planning)**
+El Beastie Morado utiliza **GOAP** para la recogida de zapatos. 
+- GOAP es un sistema de planificación de IA donde el agente no sigue un árbol de comportamiento fijo, sino que construye planes dinámicamente encadenando acciones para alcanzar una meta. El planificador usa el algoritmo **A estrella** para encontrar la secuencia óptima de acciones que transforme el estado actual del mundo en el estado deseado, minimizando el coste total.
+- Características:
+	1. *Orientación a metas*: El agente no sigue una secuencia fija de comportamientos, sino que identifica su objetivo actual y construye un plan para alcanzarlo.
+   2. *Planificación dinámica*: Recalcula su plan cuando las condiciones del entorno cambian significativamente, adaptándose a nuevas situaciones sin necesidad de programar cada caso.
+   3. *Optimización por costes*: Evalúa múltiples caminos posibles para alcanzar su meta y selecciona el de menor coste, considerando factores.
+   4. *Independencia entre acciones y metas*: Las acciones se definen de forma modular con sus propias precondiciones y efectos, permitiendo que el planificador las combine libremente para satisfacer distintas metas.
+   5. *Reacción a eventos externos*: Si hay un evento externo, deja el plan actual y replanifica desde el nuevo estado, demostrando capacidad de recuperación ante interrupciones.
+- GOAP se sustenta en **tres elementos esenciales**:
+   1. ESTADO DEL MUNDO: 
+      - Representa una representación simplificada de la realidad del agente en un instante concreto. Es un conjunto de pares clave-valor (diccionario) donde cada clave describe una propiedad relevante del entorno o del propio agente, y el valor indica su estado actual.
+      - El estado del mundo es la única información que el planificador necesita conocer para tomar decisiones, lo que lo hace muy eficiente. Solo se almacenan las variables relevantes para la toma de decisiones, ignorando detalles innecesarios del entorno.
+      - Pseudocódigo:
+      ``` csharp
+      class WorldState:
+         // dictionary (key: StateSO; value: State)
+         states: []
+    
+         // verify if some conditions are true
+         function MeetConditions(conditions:[]) -> bool:
+            for c in conditions:
+               if not states.containsKey(condition.key):
+                  return false
+               else if states[condition.key] != condition.value: 
+                  return false
+               else:
+                  return true
+         
+         // apply effects and return a new state
+         function ApplyEffects(effects:[]) -> WorldState :
+            newState = Clone()
+            for e in effects:
+               newState.setState(e.key, e.value)
+            return newState
 
+         // clone a state
+         function Clone() -> WorldState :
+            clone = new WorldState()
+            for par in states
+               clone.states.add(par.key, par.value)
+            return clone
+      ```
+   2. ACCIÓN: 
+   - Representa una **operación atómica** que el agente puede realizar para transformar el estado actual del mundo en uno nuevo. Cada acción se define mediante tres componentes:
+      1. *Precondiciones*: condiciones que deben cumplirse en el estado del mundo para que la acción pueda ejecutarse. Si el estado actual no satisface las precondiciones, el planificador ni siquiera considerará esta acción.
+      2. *Efectos*: cambios en el estado del mundo una vez que la acción se completa con éxito. Modifican los valores de ciertas variables, añadiendo, cambiando o eliminando pares clave-valor.
+      3. *Coste*: valor numérico (dinámico) que representa el gasto de ejecutar la acción. El planificador busca minimizar el coste total del plan, por lo que el coste determina la preferencia entre distintas secuencias.
+   - Ejemplo:
+   ```
+   ACCIÓN "Recoger Zapato":
+    Precondiciones: {
+        zapatoCercano: true,     // Debe haber un zapato al alcance
+        tieneZapato: false,      // No puede llevar ya uno
+        paralizado: false        // No puede estar paralizado
+    }
+    
+    Efectos: {
+        tieneZapato: true,       // Ahora lleva un zapato
+        zapatoCercano: false     // El zapato ya no está disponible
+    }
+    
+    Coste: 1.5                   // Tiempo y peso del zapato
+   ```
+   - Pseudocódigo:
+   ```csharp
+   abstract class ActionGOAP
+      // attributes
+      nameAction: string
+      cost: float = 1.0
+
+      preconditions: Dict[]
+      effects: Dict[]
+      
+      // verify if we can do this action in the current state
+      function IsViable(currentState: WorldState) -> bool :
+         return currentState.MeetConditions(preconditions)
+      
+      // execute action
+      function Execute() -> bool :
+      
+      // verify if an action is finished
+      function Finished() -> bool :
+      
+      // Get cost (it depends on the current state)
+      function GetCost(currentState: WorldState) : float
+         return cost
+      
+      // restart to reuse
+      function Restart():
+
+   ```
+   3. META:
+   - En GOAP, la meta no es una clase como tal, sino simplemente un diccionario de condiciones que el agente quiere cumplir. Es igual que las precondiciones o los efectos: pares de clave-valor.
+   - Ejemplo:
+   ```
+   // La meta es simplemente un diccionario
+   META "Entregar Zapato" = {
+      tieneZapato: false,
+      enBase: true
+   }
+
+   META "Sobrevivir" = {
+      enPeligro: false
+   }
+
+   META "Recolectar" = {
+      tieneZapato: true
+   }
+   ```
+- Algoritmo principal de planificación
+```csharp
+function CreatePlan(currentState:WorldState, goal:[]) -> Action[] :
+   // 1. If we've already reached the goal, do nothing
+   if currentState.MeetsConditions(goal):
+      return []  // Empty plan
+   
+   // 2. Try to build a plan using A*
+   plan = AStarSearch(currentState, goal)
+   
+   if plan is not null:    // 3. If a plan was found, return it
+      return plan
+   else:    // 4. No plan found, return failure
+      return FAILURE
+```
+- Búsqueda A*:
+```csharp
+struct PlanNode:
+   state: WorldState // World state at this point
+   action: Action // Action that led to this state
+   parent: PlanNode // Previous node in the plan
+   runningCost: float // Accumulated cost (g)
+   estimatedCost: float // Total estimated cost (f = g + h)
+   
+function AStarSearch(initialState:WorldState, goal:[]) -> Action[] :
+   // helper structures
+   openList = []
+   closedList = []
+   
+   // create the starting node
+   startNode = PlanNode(state: initialState, action: null, parent: null, 
+   runningCost: 0, estimatedCost: Heuristic(initialState, goal))
+   
+   Add(openList, startNode)
+   
+   while openList is not empty:
+      // Pick the most promising node (lowest total estimated cost)
+      currentNode = ExtractLowestCostNode(openList)
+      
+      // Check if we reached the goal
+      if currentNode.state.MeetsConditions(goal):
+         return ReconstructPlan(currentNode)
+      
+      // Mark as explored
+      Add(closedList, currentNode)
+      
+      // Explore every available action
+      for each action in AvailableActions:
+         // Check if the action can run from this state
+         if currentNode.state.MeetsConditions(action.preconditions):
+               // Compute the new state after applying effects
+               newState = currentNode.state.ApplyEffects(action.effects)
+               
+               // Compute costs
+               newRunningCost = currentNode.runningCost + action.GetCost(currentNode.state)
+               newEstimatedCost = newRunningCost + Heuristic(newState, goal)
+               
+               // Create the new node
+               newNode = PlanNode(state: newState, action: action, parent: currentNode, 
+               runningCost: newRunningCost, estimatedCost: newEstimatedCost)
+               
+               // Check if a node with the same state already exists in the open list
+               existingOpenNode = FindNodeByState(openList, newState)
+               existingClosedNode = FindNodeByState(closedList, newState)
+               
+               if existingOpenNode is not null:
+                  // Replace if this path is cheaper
+                  if newRunningCost < existingOpenNode.runningCost:
+                     UpdateNode(existingOpenNode, newNode)
+               
+               else if existingClosedNode is not null:
+                  // Reopen if we found a better path
+                  if newRunningCost < existingClosedNode.runningCost:
+                     Remove(closedList, existingClosedNode)
+                     Add(openList, newNode)
+               
+               else:
+                  // New node, add to the open list
+                  Add(openList, newNode)
+   
+   // No solution found
+   return null
+```
+- Heurística:
+```csharp
+// Counts how many goal conditions are still unsatisfied
+// Assumes each action can satisfy at least one condition
+function Heuristic(state: WorldState, goal: []) -> int :
+   unsatisfied = 0
+   
+   for p in goal:
+      if not state.containsKey(p.key) || state[key] != value:
+         unsatisfied += 1
+   return unsatisfied
+```
+- Reconstrucción de planes:
+```csharp
+// Walks backwards from the goal node to build the action sequence
+function ReconstructPlan(finalNode: PlanNode) : Action[]
+   plan = []
+   currentNode = finalNode
+   
+   while currentNode.parent is not null:
+      InsertAtFront(plan, currentNode.action)
+      currentNode = currentNode.parent
+   
+   return plan
+```
 #### 4.3.3 Tux 
    Es el personaje que estará molestando a los dos beasties de conseguir los zapatos. Usará árbol de comportamiento para estar disparando proyectiles hacia los beasties. Tux estará caminando desde fuera de la mapa a una altura superior usando la navMesh de Unity, cuando llegue a una esquina, su nuevo objetivo será la siguiente esquina. A cada cierto tiempo disparará un proyectil teniendo en cuenta la distancia y la puntuación de cada beastie, haciendo una ponderación entre esos dos parámetros.
 
