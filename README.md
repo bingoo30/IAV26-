@@ -413,18 +413,20 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 ### María Eduarda Beckers
 | Fecha | Descripción |
 |----------|------|
-| 2026-05-12 | *Documentación*: s |
+| 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
 
 ### Haoshuang Hou
 | Fecha | Descripción |
 |----------|------|
-| 2026-05-12 | *Documentación*: s |
+| 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
 
 ### Bingcheng Wang
 | Fecha | Descripción |
 |----------|------|
 | 2026-05-10 | *Organización*: Creación del repositorio y README |
 | 2026-05-11 | *Desarrollo*: Creación del proyecto de Unity |
+| 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
+| 2026-05-14 | *Documentación*: añadir explicación y pseudocódigos de GOAP en el readme |
 
 ## 9. Licencia
 - Uso educativo y de investigación – Universidad Complutense de Madrid
