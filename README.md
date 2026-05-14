@@ -105,16 +105,129 @@ El proyecto contará con tres escenas:
 ### 4.3. Comportamientos implementados
 
 #### 4.3.1 Beastie rojo
-   Utilizará machine learning para aprender que acciones le resultaran una mayor puntuación. Al realizar la simulación una serie de veces, el Beastie rojo deberá ser capaz de rocojer zapatos y devolverlos a su base, llevando en cuenta el tiempo que ha tardado en devolver el zapato y su valor.
+El Beastie Rojo utiliza aprendizaje por refuerzo mediante ML-Agents de Unity para aprender automáticamente una política de comportamiento orientada a maximizar la puntuación final de la partida.
 
-**Algo**
-- Descripcion.
-- Características:
-	1. x
-- Pseudocódigo:
-``` csharp
-class Hola
+A diferencia de un comportamiento programado manualmente, el agente aprende mediante prueba y error interactuando con el entorno. Durante el entrenamiento, el Beastie ejecuta acciones, recibe recompensas o penalizaciones y ajusta progresivamente su política para mejorar su rendimiento.
+
+El objetivo del entrenamiento consiste en que el agente aprenda estrategias eficientes para:
+
+- Recoger zapatos valiosos.
+- Minimizar el tiempo de transporte.
+- Evitar ser alcanzado por Tux.
+- Gestionar el peso transportado.
+- Optimizar la puntuación total obtenida antes de finalizar la partida.
+
+Para entrenar al Beastie Rojo utilizando ML-Agents, es necesario instalar tanto el paquete de Unity como el entorno Python encargado del entrenamiento.
+
+##### Configuración del agente en Unity
+
+El Beastie Rojo utiliza un prefab con varios componentes específicos de ML-Agents.
+
+| Componente          | Función                                       |
+| ------------------- | --------------------------------------------- |
+| Behavior Parameters | Define el espacio de observaciones y acciones |
+| Decision Requester  | Indica cada cuántos frames toma decisiones    |
+| Agent Script        | Script principal del aprendizaje              |
+| Rigidbody           | Movimiento físico                             |
+| Collider            | Detección de colisiones                       |
+
+##### Diseño del agente
+La clase principal "Beastie Agent" heredará de Agent. Tenniendo los siguientes métodos:
+
+| Método                  | Función                             |
+| ----------------------- | ----------------------------------- |
+| `CollectObservations()` | Recoge información del entorno      |
+| `OnActionReceived()`    | Ejecuta acciones                    |
+| `OnEpisodeBegin()`      | Reinicia el episodio                |
+| `Heuristic()`           | Permite control manual para pruebas |
+
+
+**Observaciones utilizadas:**
+- Posición relativa del zapato más cercano.
+- Distancia al zapato.
+- Peso del zapato.
+- Valor del zapato.
+- Si actualmente lleva un zapato.
+- Peso transportado actual.
+- Posición relativa de la base.
+- Distancia a la base.
+- Posición relativa de Tux.
+- Distancia a Tux.
+- Velocidad actual.
+- Tiempo restante de la partida.
+
+Ejemplo:
+
+```csharp
+public override void CollectObservations(VectorSensor sensor)
+{
+    sensor.AddObservation(relativeShoePosition);
+    sensor.AddObservation(shoeWeight);
+    sensor.AddObservation(shoeValue);
+    sensor.AddObservation(hasShoe ? 1 : 0);
+    sensor.AddObservation(relativeBasePosition);
+    sensor.AddObservation(relativeTuxPosition);
+    sensor.AddObservation(currentVelocity);
+}
 ```
+
+**Espacio de acciones (Action Space):**
+
+| Rama            | Acción                            |
+| --------------- | --------------------------------- |
+| Movimiento      | Arriba, abajo, izquierda, derecha |
+| Acción especial | Nada, recoger/soltar              |
+
+```csharp
+int moveAction = actions.DiscreteActions[0];
+int interactAction = actions.DiscreteActions[1];
+```
+
+**Sistema de Recompensas:**
+El Beastie recibe recompensas positivas por comportamientos deseados y penalizaciones por acciones perjudiciales.
+
+| Evento                              | Recompensa           |
+| ----------------------------------- | -------------------- |
+| Recoger zapato                      | `+0.5f`              |
+| Entregar zapato                     | `+(valorZapato * 2)` |
+| Acercarse a la base llevando zapato | `+0.01f`             |
+| Estar mucho tiempo sin actuar       | `-0.001f`            |
+| Transportar mucho peso              | `-0.0005f * peso`    |
+| Ser golpeado por Tux                | `-1.0f`              |
+| Chocar contra obstáculos            | `-0.1f`              |
+
+```csharp
+AddReward(valorZapato * 2f);
+```
+
+##### Entrenamiento del modelo
+
+Para comenzar el entrenamiento se utiliza un archivo de configuración YAML y la terminal.
+
+```yaml
+behaviors:
+  BeastieBehavior:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 1024
+      buffer_size: 10240
+      learning_rate: 3.0e-4
+    network_settings:
+      hidden_units: 128
+      num_layers: 2
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    max_steps: 500000
+    time_horizon: 64
+    summary_freq: 10000
+```
+```bash
+mlagents-learn config.yaml --run-id=BeastieTraining
+```
+
+
 #### 4.3.2 Beastie morado
 **GOAP (Goal-Oriented Action Planning)**
 El Beastie Morado utiliza **GOAP** para la recogida de zapatos. 
@@ -414,6 +527,7 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 | Fecha | Descripción |
 |----------|------|
 | 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
+| 2026-05-12 | *Documentación*: añadir explicacion de ML |
 
 ### Haoshuang Hou
 | Fecha | Descripción |
@@ -437,3 +551,6 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 - Arte, música y recursos audiovisuales: todos los assets han sido creados por los autores del proyecto y se distribuyen exclusivamente bajo las mismas condiciones de uso educativo y de investigación descritas anteriormente, quedando prohibido su uso comercial sin autorización expresa.
 
 ## 10. Referencias
+
+- [Descargarse ML-Agents Toolkit](https://docs.unity3d.com/Packages/com.unity.ml-agents@4.0/manual/Installation.html)
+- [Tutorial de como usar el ML-Agents Toolkit](https://www.youtube.com/@LudicWorlds)
