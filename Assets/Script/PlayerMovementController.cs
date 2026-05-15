@@ -38,6 +38,10 @@ public class PlayerMovementController : MonoBehaviour
 
         Vector3 move = new Vector3(moveInput.x, 0f, moveInput.y);
 
+        if (move != Vector3.zero)
+        {
+            transform.forward = move;
+        }
         float speed = GetSpeed();
 
         if (controls.Sprint)
