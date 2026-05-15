@@ -1,17 +1,44 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class PointManager : MonoBehaviour
 {
     private PlayerScore[] players;
 
-    void Start()
+    [SerializeField]
+    private TextMeshProUGUI purpleBeastieScore;
+
+    [SerializeField]
+    private TextMeshProUGUI redBeastieScore;
+void Start()
     {
         // find all objects with this component (query)
         players = FindObjectsByType<PlayerScore>(FindObjectsSortMode.None);
         StartCoroutine(WinnerRoutine());
+        UpdateScoreUI();
     }
 
+    private void Update()
+    {
+        UpdateScoreUI();
+    }
+
+    void UpdateScoreUI()
+    {
+        foreach (var p in players)
+        {
+            if (p.CompareTag("Purple"))
+            {
+                purpleBeastieScore.text = "Purple: " + p.Score;
+            }
+
+            if (p.CompareTag("Red"))
+            {
+                redBeastieScore.text ="Red: " + p.Score;
+            }
+        }
+    }
     IEnumerator WinnerRoutine()
     {
         for (int i = 0; i < 3; i++)

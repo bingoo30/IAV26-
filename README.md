@@ -640,7 +640,7 @@ En conjunto, este proyecto no solo cumple los objetivos planteados, sino que tam
 |----------|------|
 | 2026-05-12 | *Documentación*: actualizar en conjunto el readme |
 | 2026-05-15 | *Documentación*: añadir explicacion y pseudocódigo de árbol de comportamiento |
-| 2026-05-15 | *Desarrollo*: crear el HUD|
+| 2026-05-15 | *Desarrollo*: crear HUD de puntuación e importar los modelos|
 
 ### Bingcheng Wang
 | Fecha | Descripción |
